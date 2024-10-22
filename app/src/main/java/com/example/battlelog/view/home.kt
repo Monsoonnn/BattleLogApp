@@ -2,6 +2,7 @@ package com.example.battlelog.view
 
 
 
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -23,6 +24,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -84,7 +86,7 @@ fun TopBar(
 @Composable
 fun BottomBar(
     modifier: Modifier,
-    navController: NavController
+    navController: NavController? = null,
 ){
 
     Row(
@@ -128,7 +130,7 @@ fun BottomBar(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.clickable {
-                    navController.navigate("Champion_Search")
+                    navController?.navigate("Champion_Search")
                 }
             ) {
                 Image(
@@ -228,7 +230,8 @@ fun ServerChoose() {
 
 @Composable
 fun TierList(
-    modifier: Modifier
+    modifier: Modifier,
+    navController: NavController? = null,
 ){
     var selectedPage by remember { mutableStateOf("TOP") }
 
@@ -298,15 +301,41 @@ fun TierList(
 
             // Fake Data using GPT
 
-            val dummyData = List(5) { index ->
-                Triple(
-                    (index + 1).toString(),
-                    listOf("S", "A", "B", "C", "D").random(),
-                    "Champion ${('A'..'Z').random()}"
-                )
+            val dummyData = when (selectedPage) {
+                "TOP" -> List(5) { index ->
+                    Pair(
+                        listOf("S", "A", "B").random(),
+                        "Top Champion ${('A'..'Z').random()}"
+                    )
+                }
+                "JUG" -> List(5) { index ->
+                    Pair(
+                        listOf("S", "A", "B", "C").random(),
+                        "Jug Champion ${('A'..'Z').random()}"
+                    )
+                }
+                "MID" -> List(5) { index ->
+                    Pair(
+                        listOf("S", "A", "B", "C", "D").random(),
+                        "Mid Champion ${('A'..'Z').random()}"
+                    )
+                }
+                "ADC" -> List(5) { index ->
+                    Pair(
+                        listOf("A", "B", "C", "D").random(),
+                        "ADC Champion ${('A'..'Z').random()}"
+                    )
+                }
+                "SUP" -> List(5) { index ->
+                    Pair(
+                        listOf("A", "B", "C", "D").random(),
+                        "Sup Champion ${('A'..'Z').random()}"
+                    )
+                }
+                else -> emptyList()
             }
 
-            dummyData.forEach { entry ->
+            dummyData.forEachIndexed { index, entry ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -314,7 +343,7 @@ fun TierList(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = entry.first, modifier = Modifier.weight(0.1f), style = MaterialTheme.typography.labelSmall)
+                    Text(text = (index + 1).toString(), modifier = Modifier.weight(0.1f), style = MaterialTheme.typography.labelSmall)
 
                     Box(
                         modifier = Modifier
@@ -336,7 +365,7 @@ fun TierList(
                                 .padding(horizontal = 2.dp)
                         ) {
                             Text(
-                                text = entry.second,
+                                text = entry.first,
                                 color = Color.White,
                                 style = MaterialTheme.typography.labelSmall,
                             )
@@ -344,7 +373,7 @@ fun TierList(
 
                     }
 
-                    Text(text = entry.third, modifier = Modifier.weight(0.3f))
+                    Text(text = entry.second, modifier = Modifier.weight(0.3f))
                     Text(
                         text = "${Random.nextInt(40, 61)}%",
                         modifier = Modifier.weight(0.133f)
@@ -366,7 +395,7 @@ fun TierList(
                     .align(Alignment.CenterHorizontally)
                     .fillMaxWidth(0.8f),
                 onClick = {
-
+                    navController?.navigate(Routes.tierList_Detail)
                 },
                 content = {
                     Text(
@@ -380,13 +409,13 @@ fun TierList(
 
 }
 
-/*@Preview(showBackground = true)
+@Preview(showBackground = true)
 @Composable
 fun HomePreview() {
     BatteLogTheme {
         Scaffold(
             topBar = { TopBar(Modifier)},
-            bottomBar = { BottomBar(Modifier, navController = NavController())},
+            bottomBar = { BottomBar(Modifier, navController = null)},
         ){
             paddingValues ->
             Column(
@@ -397,18 +426,56 @@ fun HomePreview() {
                     ),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-               SearchBar(Modifier)
-//                TierList(Modifier)
-//                FreeChampions(Modifier)
+                NavigateSearchSummoner(Modifier, stringResource(R.string.search_placeholder))
+                TierList(Modifier)
+                FreeChampions(Modifier)
             }
 
         }
     }
 
-}*/
+}
+@Composable
+fun NavigateSearchSummoner(
+    modifier: Modifier,
+    placeholder: String,
+    navController: NavController? = null,
+) {
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+            .border(1.dp, color = MaterialTheme.colorScheme.primary, shape = RoundedCornerShape( 5.dp))
+            .clickable{
+                navController?.navigate(Routes.summoner_Search)
+            },
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+
+    ){
+        Icon(
+            painter = painterResource(R.drawable.magnifying_glass_solid),
+            contentDescription = null,
+            modifier = Modifier.size(32.dp).padding(10.dp)
+        )
+        Text(
+            text = placeholder,
+        )
+
+
+    }
+
+
+
+}
+
 
 @Composable
-fun FreeChampions(modifier: Modifier = Modifier) {
+fun FreeChampions(
+    modifier: Modifier = Modifier,
+    navController: NavController? = null,
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -433,7 +500,7 @@ fun FreeChampions(modifier: Modifier = Modifier) {
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth(0.8f),
             onClick = {
-
+                navController?.navigate(Routes.rotationChampion_Detail)
             },
             content = {
                 Text(
@@ -447,7 +514,8 @@ fun FreeChampions(modifier: Modifier = Modifier) {
 
 @Composable
 fun ChampionRotations(
-    champion: Champion
+    champion: Champion,
+
 ) {
     Column(
         modifier = Modifier

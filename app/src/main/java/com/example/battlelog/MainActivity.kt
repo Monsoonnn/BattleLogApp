@@ -31,10 +31,15 @@ import androidx.navigation.compose.rememberNavController
 import com.example.battlelog.ui.theme.BatteLogTheme
 import com.example.battlelog.view.BottomBar
 import com.example.battlelog.view.FreeChampions
+import com.example.battlelog.view.NavigateSearchSummoner
+import com.example.battlelog.view.Routes
 import com.example.battlelog.view.SearchBar
+import com.example.battlelog.view.SummonerSearch
 import com.example.battlelog.view.TierList
+import com.example.battlelog.view.TierListChampion
 import com.example.battlelog.view.TopBar
 import com.example.battlelog.view.championSearch
+import com.example.battlelog.view.rotationsChampionDetail
 
 import com.noahkohrs.riot.api.RiotApi
 import com.noahkohrs.riot.api.values.Platform
@@ -54,9 +59,9 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             NavHost(
                 navController = navController,
-                startDestination = "Home",
+                startDestination = Routes.home,
                 builder = {
-                    composable("Home"){
+                    composable(Routes.home){
                         BatteLogTheme {
                             Scaffold(
                                 topBar = { TopBar(Modifier)},
@@ -71,17 +76,32 @@ class MainActivity : ComponentActivity() {
                                         ),
                                     verticalArrangement = Arrangement.spacedBy(10.dp),
                                 ) {
-                                    SearchBar(Modifier, stringResource(R.string.search_placeholder))
-                                    TierList(Modifier)
-                                    FreeChampions(Modifier)
+                                    NavigateSearchSummoner(Modifier, stringResource(R.string.search_placeholder), navController)
+                                    TierList(Modifier, navController)
+                                    FreeChampions(Modifier, navController)
                                 }
 
                             }
                         }
                     }
-                    composable("Champion_Search"){
+                    composable(Routes.champion_Search){
                         BatteLogTheme () {
                             championSearch(navController)
+                        }
+                    }
+                    composable(Routes.summoner_Search,){
+                        BatteLogTheme {
+                            SummonerSearch(navController)
+                        }
+                    }
+                    composable(Routes.tierList_Detail){
+                        BatteLogTheme {
+                            TierListChampion(navController)
+                        }
+                    }
+                    composable(Routes.rotationChampion_Detail){
+                        BatteLogTheme {
+                            rotationsChampionDetail(navController)
                         }
                     }
 
