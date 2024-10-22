@@ -50,7 +50,7 @@ android {
 }
 
 dependencies {
-
+    val nav_version = "2.8.0"
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -70,4 +70,5 @@ dependencies {
     implementation("io.github.openfeign:feign-moshi:13.3")
     implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
     implementation("androidx.compose.ui:ui-text-google-fonts:1.7.4")
+    implementation("androidx.navigation:navigation-compose:$nav_version")
 }

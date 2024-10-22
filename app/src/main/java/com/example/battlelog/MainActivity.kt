@@ -6,20 +6,35 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.battlelog.ui.theme.BatteLogTheme
-import com.example.battlelog.view.HomeHeader
+import com.example.battlelog.view.BottomBar
+import com.example.battlelog.view.FreeChampions
+import com.example.battlelog.view.SearchBar
+import com.example.battlelog.view.TierList
+import com.example.battlelog.view.TopBar
+import com.example.battlelog.view.championSearch
 
 import com.noahkohrs.riot.api.RiotApi
 import com.noahkohrs.riot.api.values.Platform
@@ -36,9 +51,42 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            BatteLogTheme {
-                HomeHeader(modifier = Modifier)
-            }
+            val navController = rememberNavController()
+            NavHost(
+                navController = navController,
+                startDestination = "Home",
+                builder = {
+                    composable("Home"){
+                        BatteLogTheme {
+                            Scaffold(
+                                topBar = { TopBar(Modifier)},
+                                bottomBar = { BottomBar(Modifier, navController)},
+                            ){
+                                paddingValues ->
+                                Column(
+                                    modifier = Modifier
+                                        .padding(paddingValues)
+                                        .verticalScroll(
+                                            rememberScrollState()
+                                        ),
+                                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                                ) {
+                                    SearchBar(Modifier, stringResource(R.string.search_placeholder))
+                                    TierList(Modifier)
+                                    FreeChampions(Modifier)
+                                }
+
+                            }
+                        }
+                    }
+                    composable("Champion_Search"){
+                        BatteLogTheme () {
+                            championSearch(navController)
+                        }
+                    }
+
+                }
+            )
         }
         // Fetch the summoner name after setting content
         viewModel.fetchSummonerName()
@@ -78,19 +126,5 @@ class MainViewModel : ViewModel() {
 private data class CustomPlayer(val name: String, val tag: String)
 private val DNS_MON = CustomPlayer("Mon", "Mon31")
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!", // use the name parameter obtained from MainActivity
-        modifier = modifier
-    )
-}
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    BatteLogTheme {
-        Greeting("")
-    }
-}
 
