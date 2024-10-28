@@ -135,9 +135,9 @@ fun SummonerSearch(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 if(currentSearchKey == "") {
-                    SearchRecent()
+                    SearchRecent(navController)
                 } else {
-                    SummonerFilter()
+                    SummonerFilter(navController)
                 }
             }
 
@@ -147,8 +147,8 @@ fun SummonerSearch(
 
 
 @Composable
-fun  SummonerFilter(
-
+fun SummonerFilter(
+    navController: NavController? = null
 ){
     val summonerList = remember { mutableStateListOf("Hide on bú", "Hide on bush", "Hít bú") }
     Column (
@@ -158,15 +158,17 @@ fun  SummonerFilter(
         verticalArrangement = Arrangement.SpaceBetween,
     ){
         summonerList.forEach { summoner ->
-            summonerRecent(summoner) {
-                summonerList.remove(summoner)
+            if (navController != null) {
+                summonerRecent(summoner, navController = navController, onDelete = {
+                    summonerList.remove(summoner)
+                })
             }
         }
     }
 }
 @Composable
 fun SearchRecent(
-
+    navController: NavController? = null
 ){
     val summonerRecentList = remember { mutableStateListOf("ThanhLienMinh", "Summoner2", "Summoner3") }
     Column (
@@ -196,8 +198,10 @@ fun SearchRecent(
             )
         }
         summonerRecentList.forEach { summoner ->
-            summonerRecent(summoner) {
-                summonerRecentList.remove(summoner)
+            if (navController != null) {
+                summonerRecent(summoner, navController = navController, onDelete = {
+                    summonerRecentList.remove(summoner)
+                })
             }
         }
 
@@ -210,7 +214,8 @@ fun SearchRecent(
 @Composable
 fun summonerRecent(
     summoner: String,
-    onDelete: () -> Unit
+    onDelete: () -> Unit,
+    navController: NavController
 ){
     Row(
         modifier = Modifier
@@ -223,7 +228,9 @@ fun summonerRecent(
         horizontalArrangement = Arrangement.SpaceBetween
     ){
         Box(
-
+            modifier = Modifier.clickable {
+                navController.navigate(Routes.profileDetail)
+            }
         ){
             Image(
                 painter = painterResource(R.drawable.fk2024icon),

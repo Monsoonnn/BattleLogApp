@@ -6,4 +6,7 @@
     <string name="search_placeholder">Tên nguời chơi + #Tag</string>
     <string name="champion_placeholder">Tên tướng</string>
 
+    <string name="rank_solo">Đơn đôi</string>
+    <string name="rank_flex">Linh hoạt</string>
+    <string name="match_History">Lịch sử đấu</string>
 </resources>

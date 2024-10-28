@@ -2,7 +2,6 @@ package com.example.battlelog.view
 
 
 
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -11,29 +10,25 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,7 +42,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -92,13 +86,15 @@ fun BottomBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .topBorder(1.dp, MaterialTheme.colorScheme.primary),
+            .topBorder(1.dp, MaterialTheme.colorScheme.primary)
+            .windowInsetsPadding(WindowInsets.navigationBars),
         horizontalArrangement = Arrangement.SpaceAround,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+
     ){
         var selectedBox by remember { mutableStateOf("Home") }
 
-        val defaultModifier = Modifier.size(90.dp).padding(10.dp)
+        val defaultModifier = Modifier.size(90.dp, 65.dp)
 
         Box(
             modifier = defaultModifier.clickable { selectedBox = "Home" },
@@ -110,13 +106,13 @@ fun BottomBar(
                 Image(
                     painter = painterResource(R.drawable.house_solid),
                     contentDescription = null,
-                    modifier = Modifier.size(32.dp),
+                    modifier = Modifier.size(20.dp),
                     colorFilter = if (selectedBox != "Home") androidx.compose.ui.graphics.ColorFilter.tint(
                         colorResource(R.color.gray_998F8F)) else null
                 )
                 Text(
                     text = stringResource(R.string.home),
-                    style = MaterialTheme.typography.labelMedium,
+                    style = MaterialTheme.typography.labelSmall,
                     color = if (selectedBox != "Home") MaterialTheme.colorScheme.primary else Color.Black
 
                 )
@@ -136,13 +132,13 @@ fun BottomBar(
                 Image(
                     painter = painterResource(R.drawable.champion),
                     contentDescription = null,
-                    modifier = Modifier.size(32.dp),
+                    modifier = Modifier.size(20.dp),
                     colorFilter = if (selectedBox != "Champions") androidx.compose.ui.graphics.ColorFilter.tint(
                         colorResource(R.color.gray_998F8F)) else null
                 )
                 Text(
                     text = stringResource(R.string.Champions),
-                    style = MaterialTheme.typography.labelMedium,
+                    style = MaterialTheme.typography.labelSmall,
                     color = if (selectedBox != "Champions")  MaterialTheme.colorScheme.primary else Color.Black
                 )
             }
@@ -156,13 +152,13 @@ fun BottomBar(
                 Image(
                     painter = painterResource(R.drawable.settings),
                     contentDescription = null,
-                    modifier = Modifier.size(32.dp),
+                    modifier = Modifier.size(20.dp),
                     colorFilter = if (selectedBox != "Settings") androidx.compose.ui.graphics.ColorFilter.tint(
                         colorResource(R.color.gray_998F8F)) else null
                 )
                 Text(
                     text = stringResource(R.string.settings),
-                    style = MaterialTheme.typography.labelMedium,
+                    style = MaterialTheme.typography.labelSmall,
                     color = if (selectedBox == "Settings")  MaterialTheme.colorScheme.primary else Color.Black
                 )
             }
@@ -520,7 +516,7 @@ fun ChampionRotations(
     Column(
         modifier = Modifier
             .width(150.dp)
-            .padding(10.dp, )
+            .padding(10.dp)
     ) {
         Image(
             painter = painterResource(id = champion.imageResId),
@@ -542,7 +538,7 @@ fun ChampionRotations(
             modifier = Modifier.padding(top = 4.dp)
         ) {
             Text(
-                text = "${champion.fullName}",
+                text = champion.fullName,
                 color = Color.Red,
                 style = MaterialTheme.typography.bodySmall
             )
