@@ -8,4 +8,7 @@ object Routes {
     val rotationChampion_Detail = "rotationChampion_Detail"
     val profileDetail = "profilte_Detail"
     val matchDetail = "match_Detail"
+    val championDetail = "champion_Detail"
+    val settings = "settings"
+    val liveGame = "liveGame"
 }

@@ -145,10 +145,18 @@ fun BottomBar(
         }
 
         Box(
-            modifier = defaultModifier.clickable { selectedBox = "Settings" },
+            modifier = defaultModifier.clickable {
+                selectedBox = "Settings"
+
+           },
             contentAlignment = Alignment.Center
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.clickable {
+                    navController?.navigate(Routes.settings)
+                }
+            ) {
                 Image(
                     painter = painterResource(R.drawable.settings),
                     contentDescription = null,

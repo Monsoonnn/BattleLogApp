@@ -108,7 +108,7 @@ fun profileHeader(
         ){
             IconButton(
                 onClick = {
-                    navController?.navigate(Routes.summoner_Search)
+                    navController?.navigateUp()
                 }
             ) {
                 Icon(
@@ -194,7 +194,7 @@ fun profileHeader(
             //Ingame button
             Button(
                 onClick = {
-
+                    navController?.navigate(Routes.liveGame)
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFE0E0E0)  // Grey color for Ingame button

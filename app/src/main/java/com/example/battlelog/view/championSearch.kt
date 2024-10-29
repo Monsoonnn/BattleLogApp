@@ -117,7 +117,7 @@ fun championSearch(
             ){
                 Box(
                     modifier = Modifier.clickable {
-                        navController?.navigate("Home")
+                        navController?.navigateUp()
                     }
                 ){
                     Image(
@@ -159,7 +159,7 @@ fun championSearch(
             
             val letterToShow = if (searchQuery.isNotEmpty()) ' ' else selectedLetter
 
-            ChampionGrid(championsToShow, letter = letterToShow)
+            ChampionGrid(championsToShow, letter = letterToShow, navController = navController)
 
 
         }
@@ -216,6 +216,7 @@ fun AlphabetBar(onLetterClick: (Char) -> Unit, selectedLetter: Char) {
 fun ChampionGrid(
     championList: List<String>,
     letter: Char,
+    navController: NavController?
 ) {
     Column(
         modifier = Modifier
@@ -240,6 +241,9 @@ fun ChampionGrid(
                             painter = painterResource(R.drawable.samira),
                             contentDescription = null,
                             modifier = Modifier.size(58.dp)
+                                .clickable {
+                                navController?.navigate(Routes.championDetail)
+                            }
                         )
                         Text(text = champion, style = MaterialTheme.typography.labelMedium)
                     }

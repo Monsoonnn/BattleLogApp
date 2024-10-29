@@ -79,7 +79,23 @@ fun Navigate(){
                     MatchDetail(navController)
                 }
             }
+            composable(Routes.championDetail){
 
+                BatteLogTheme {
+                    ChampionDetail(navController)
+                }
+            }
+            composable(Routes.settings){
+
+                BatteLogTheme {
+                    SettingsView(navController)
+                }
+            }
+            composable(Routes.liveGame){
+                BatteLogTheme {
+                    LiveGameView(navController)
+                }
+            }
         }
     )
 }

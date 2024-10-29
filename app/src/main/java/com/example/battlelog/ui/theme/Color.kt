@@ -20,3 +20,12 @@ val bronzeColor = Color(0xFFCD7F32)    // Example color for Bronze
 val silverColor = Color(0xFFC0C0C0)    // Example color for Silver
 val goldColor = Color(0xFFFFD700)      // Example color for Gold
 val platinumColor = Color(0xFFE5E4E2)
+
+
+//Tier color
+
+val tierSColor = Color(0xFFE44848)  // S Tier Color
+val tierAColor = Color(0xFF49A0D5)  // A Tier Color
+val tierBColor = Color(0xFF5AD19E)  // B Tier Color
+val tierCColor = Color(0xFFFFB900)  // C Tier Color
+val tierDColor = Color(0xFF9AA4AF)  // D Tier Color
